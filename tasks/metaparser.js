@@ -76,18 +76,18 @@ module.exports = function(grunt) {
 
         var $ = cheerio.load(grunt.file.read(filepath));
         
-
-        //part = part + "Moo";
-        var part = '"' + filepath + '":';
+        var filename =  filepath.replace(/^.*[\\\/]/, '');
+        var part = '{ "filename":"' + filename + '", "data": ';
         part = part.concat(exports.parseDublinCore($));
-
-        
+        part = part.concat(',"path":"' + filepath + '"')
+        part = part + "}"
+       
         return part
         //return content;
       }).join(",");
 
       // add brackets
-      src = '{' + src + '}';
+      src = '[' + src + ']';
       // normalize
       src = grunt.util.normalizelf(src);
 
