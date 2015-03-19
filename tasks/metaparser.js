@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
-,
+
   var cheerio = require('cheerio');
 
   grunt.registerMultiTask('metaparser', 'A consortium.io html metadata file parser and json generator', function() {
