@@ -93,23 +93,26 @@ module.exports = function(grunt) {
 
         var $ = cheerio.load(grunt.file.read(filepath));
         var parsedata = exports.parseDublinCore($)
-        var filename =  filepath.replace(/^.*[\\\/]/, '');
-        
+        var filename = filepath.replace(/^.*[\\\/]/, '');
+        var dcerrors = [];
+
         grunt.log.subhead("Checking " + filename +" for required metadata: " )
         options.required.forEach(function(entry) {
 
           if ( entry in parsedata ) {
-            return grunt.log.ok(entry)
+            grunt.log.ok(entry)
           } else {
-            return grunt.log.error("missing entry: " + entry);
+            grunt.log.error("missing entry: " + entry);
+            dcerrors.push( entry);
           }
         });
-        
-        
+
         var part = '{ "filename":"' + filename + '", "data": ';
         part = part.concat(JSON.stringify(parsedata));
-        part = part.concat(',"path":"' + filepath + '"')
-        part = part + "}"
+        
+        part = part.concat(',"path":"' + filepath + '","dcerrors": [')
+        part = part.concat(JSON.stringify(dcerrors));
+        part = part + "]}"
        
         return part
         //return content;

@@ -1,7 +1,7 @@
 {
   "name": "grunt-metaparser",
   "description": "A consortium.io html metadata file parser and json generator",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "homepage": "https://github.com/consortium/grunt-metaparser",
   "author": {
     "name": "Johannes Amorosa",
