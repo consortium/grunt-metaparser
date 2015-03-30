@@ -15,8 +15,24 @@ module.exports = function(grunt) {
 
   var cheerio = require('cheerio');
 
+
   grunt.registerMultiTask('metaparser', 'A consortium.io html metadata file parser and json generator', function() {
     
+  var options = this.options({
+    required: [
+      'title', 
+      'creator',
+      'subject',
+      'description.abstract',
+      'date',
+      'type',
+      'format',
+      'language',
+      'identifier.URL',
+      'rights'
+    ]
+  });
+
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
 
@@ -70,15 +86,28 @@ module.exports = function(grunt) {
               meta[property] = content;
             }
           });
-      
-          return JSON.stringify(meta);
+          
+          return meta;
         };
 
+
         var $ = cheerio.load(grunt.file.read(filepath));
-        
+        var parsedata = exports.parseDublinCore($)
         var filename =  filepath.replace(/^.*[\\\/]/, '');
+        
+        grunt.log.subhead("Checking " + filename +" for required metadata: " )
+        options.required.forEach(function(entry) {
+
+          if ( entry in parsedata ) {
+            return grunt.log.ok(entry)
+          } else {
+            return grunt.log.error("missing entry: " + entry);
+          }
+        });
+        
+        
         var part = '{ "filename":"' + filename + '", "data": ';
-        part = part.concat(exports.parseDublinCore($));
+        part = part.concat(JSON.stringify(parsedata));
         part = part.concat(',"path":"' + filepath + '"')
         part = part + "}"
        
