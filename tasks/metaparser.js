@@ -105,7 +105,12 @@ module.exports = function(grunt) {
             grunt.log.error("missing entry: " + entry);
             dcerrors.push( entry);
           }
+          
         });
+
+        if ( dcerrors.length ) {
+          grunt.log.warn( 'No of errors: ' + dcerrors.length);
+        }
 
         var part = '{ "filename":"' + filename + '", "data": ';
         part = part.concat(JSON.stringify(parsedata));
